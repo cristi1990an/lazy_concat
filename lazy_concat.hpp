@@ -72,7 +72,7 @@ namespace detail
         {
             const std::size_t resulting_size = size();
 
-            std::basic_string<CharT, Traits, Allocator> result;
+            std::basic_string<CharT, Traits, Allocator> result{ alloc };
 
             result.resize_and_overwrite(resulting_size, [&](CharT* buffer, std::size_t)
                 {
