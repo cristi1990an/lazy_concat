@@ -128,8 +128,9 @@ namespace detail
             const lazy_concat_interface& rhs) noexcept
         {
             using result_t = lazy_strings_concat<
-                CharT, Traits, Derived,
-                string_view_concat_wrapper<CharT, Traits>>;
+                CharT, Traits,
+                string_view_concat_wrapper<CharT, Traits>,
+                Derived>;
 
             return result_t{ string_view_concat_wrapper<CharT, Traits>{ sv }, rhs.as_derived() };
         }
