@@ -77,7 +77,7 @@ namespace detail
 
             std::basic_string<CharT, Traits, Allocator> result{ alloc };
 
-            result.resize_and_overwrite(resulting_size, [this](CharT* buffer, std::size_t)
+            result.resize_and_overwrite(resulting_size, [this, &resulting_size](CharT* buffer, std::size_t)
                 {
                     parse_to(buffer);
                     return resulting_size;
@@ -92,7 +92,7 @@ namespace detail
             return os;
         }
 
-        explicit constexpr operator std::basic_string<CharT, Traits>() const
+        explicit(false) constexpr operator std::basic_string<CharT, Traits>() const
         {
             return to_string();
         }
