@@ -8,6 +8,9 @@
 #include <numeric>
 #include <ranges>
 
+template <typename CharT, typename Traits = std::char_traits<CharT>>
+class basic_lazy_concat_t;
+
 namespace detail
 {
     template <
@@ -134,6 +137,18 @@ namespace detail
 
             return result_t{ string_view_concat_wrapper<CharT, Traits>{ sv }, rhs.as_derived() };
         }
+
+        [[nodiscard]]
+        friend constexpr const Derived& operator+(const lazy_concat_interface& lhs, basic_lazy_concat_t<CharT, Traits>) noexcept
+        {
+            return lhs.as_derived();
+        }
+
+        [[nodiscard]]
+        friend constexpr const Derived& operator+(basic_lazy_concat_t<CharT, Traits>, const lazy_concat_interface& rhs) noexcept
+        {
+            return rhs.as_derived();
+        }
     };
 
     template <
@@ -144,7 +159,7 @@ namespace detail
     >
     class lazy_strings_concat
         : public lazy_concat_interface<CharT, Traits,
-            lazy_strings_concat<CharT, Traits, LeftExpression, RightExpression>>
+        lazy_strings_concat<CharT, Traits, LeftExpression, RightExpression>>
     {
     public:
 
@@ -190,7 +205,7 @@ namespace detail
     >
     class lazy_concat_char_append
         : public lazy_concat_interface<CharT, Traits,
-            lazy_concat_char_append<CharT, Traits, LeftExpression>>
+        lazy_concat_char_append<CharT, Traits, LeftExpression>>
     {
     public:
         constexpr lazy_concat_char_append(
@@ -236,7 +251,7 @@ namespace detail
     >
     class lazy_concat_char_prepend
         : public lazy_concat_interface<CharT, Traits,
-            lazy_concat_char_prepend<CharT, Traits, RightExpression>>
+        lazy_concat_char_prepend<CharT, Traits, RightExpression>>
     {
     public:
         constexpr lazy_concat_char_prepend(
@@ -317,7 +332,7 @@ namespace detail
     };
 }
 
-template <typename CharT, typename Traits = std::char_traits<CharT>>
+template <typename CharT, typename Traits>
 class basic_lazy_concat_t : public detail::lazy_concat_interface<CharT, Traits, basic_lazy_concat_t<CharT, Traits>>
 {
 public:
