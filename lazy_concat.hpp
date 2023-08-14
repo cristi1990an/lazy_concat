@@ -77,7 +77,7 @@ namespace detail
 
             std::basic_string<CharT, Traits, Allocator> result{ alloc };
 
-            result.resize_and_overwrite(resulting_size, [&](CharT* buffer, std::size_t)
+            result.resize_and_overwrite(resulting_size, [this](CharT* buffer, std::size_t)
                 {
                     parse_to(buffer);
                     return resulting_size;
@@ -92,7 +92,7 @@ namespace detail
             return os;
         }
 
-        constexpr operator std::basic_string<CharT, Traits>() const
+        explicit constexpr operator std::basic_string<CharT, Traits>() const
         {
             return to_string();
         }
@@ -295,7 +295,7 @@ namespace detail
         : public detail::lazy_concat_interface<CharT, Traits, string_view_concat_wrapper<CharT, Traits>>
     {
     public:
-        constexpr string_view_concat_wrapper(std::basic_string_view<CharT, Traits> sv) noexcept
+        explicit constexpr string_view_concat_wrapper(std::basic_string_view<CharT, Traits> sv) noexcept
             : data_{ sv }
         {}
 
@@ -316,7 +316,7 @@ namespace detail
             return out;
         }
 
-        constexpr operator std::basic_string_view<CharT, Traits>() const noexcept
+        explicit constexpr operator std::basic_string_view<CharT, Traits>() const noexcept
         {
             return data_;
         }
